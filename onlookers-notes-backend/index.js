@@ -2,6 +2,7 @@ var express = require("express");
 var fs = require("fs").promises;
 var app = express();
 var usersRouter = require("./routes/users-posts")
+var cors = require('cors')
 
 global.fileName = "users-with-posts.json";
 
@@ -11,6 +12,7 @@ let allUsers = '';
 let allPosts = '';
 let allUsersDict = new Object();
 
+app.use(cors());
 app.use(express.json());
 app.use("/users-posts", usersRouter);
 
