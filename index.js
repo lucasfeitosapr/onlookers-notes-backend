@@ -23,26 +23,39 @@ app.listen(3000, async () => {
 
         await fs.readFile(global.fileName, "utf8");
 
-        console.log("Welcome to: Onlooker's notes API!");
+        console.log("Welcome to: Onlooker's notes API!");  
 
+    } catch (err) {
+        console.log("Well, something went wrog: ", err);
+        if(err.code == ENOENT_ERROR){
+            console.log("Don't worry, I can fix it on my own!");
+            const initialJson = {
+            };
+            fs.writeFile(global.fileName, JSON.stringify(initialJson)).catch(err => {
+                console.log('Could not create file: ', err);
+            });
+        }  
+    }
+
+    try {
         await usersService.getUsers().then(users => {
 
             allUsers = users.data
-
+    
         });
-
+    
         await postsService.getPosts().then(posts => {
-
+    
            allPosts = posts.data
-
+    
         });
-
-
+    
+    
         allUsers.forEach(user => {
             allUsersDict[user.id] = {user: user};
         })
-  
-        allPosts.map(post => {
+    
+        allPosts.forEach(post => {
             try {
                 allUsersDict[post.userId]['user']['posts'].push(post);
             } catch (err) {
@@ -51,22 +64,11 @@ app.listen(3000, async () => {
         })
         
         await fs.writeFile(global.fileName, JSON.stringify(allUsersDict))
-        
-
+    
     } catch (err) {
-        console.log("Well, something went wrog: ", err.code);
-        if(err.code == ENOENT_ERROR){
-            console.log("Don't worry, I can fix it on my own!");
-            const initialJson = {
-            };
-            fs.writeFile(global.fileName, JSON.stringify(initialJson)).catch(err => {
-                console.log('Could not create file: ', err);
-            });
-        }
-
-        
-        
+        console.log("Well, something went wrog: ", err);
     }
+    
 
     
 });
