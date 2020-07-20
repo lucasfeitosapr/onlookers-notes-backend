@@ -1,0 +1,13 @@
+.maindiv {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* grid-template-rows: repeat(4, minmax(100px, 200px)); */
+}
+.usercard {
+    border-style: solid;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    height: 150px;
+}
